@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+spring:
+  r2dbc:
+    url: ${postgres_url}
+    username: ${postgres_username}
+    password: ${postgres_password}
+  data:
+    redis:
+      connect-timeout: 3000
+      password: ${redis_password}
+      url: ${redis_url}
+
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+
+userservice:
+  secret: ${secret_key}
