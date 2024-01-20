@@ -22,7 +22,6 @@ public interface UserService {
     Mono<ResponseEntity<User>> getUserByUsername(String username);
     Mono<ResponseEntity<User>> saveUser(SaveUserRequestDto saveUserRequestDto);
     Mono<ResponseEntity<Object>> deleteUser(UUID userId);
-    Flux<User> getAll();
     Mono<ResponseEntity<AuthUser>> loginByUsernameAndPassword(LoginRequestDto dto);
     Mono<ResponseEntity<Boolean>> logout(String token);
     Mono<ResponseEntity<AuthUser>> getUserInfo(AuthUser user);

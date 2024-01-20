@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -35,21 +34,9 @@ public class UserController {
         return userService.saveUser(userRequestDto);
     }
 
-    @GetMapping("/getbyusername")
-    public Mono<ResponseEntity<User>> getUserByUsername(@RequestParam String username, ServerWebExchange request){
-        // Test endpoint
-        return userService.getUserByUsername(username);
-    }
-
     @DeleteMapping(URL_DELETE)
     public Mono<ResponseEntity<Object>> deleteById(@RequestParam UUID userId, ServerWebExchange request){
         return userService.deleteUser(userId);
-    }
-
-    @GetMapping("/getall")
-    public Flux<User> getAll(ServerWebExchange request){
-        // Test endpoint
-        return userService.getAll();
     }
 
     @PostMapping(URL_LOGIN)
@@ -69,11 +56,5 @@ public class UserController {
     public Mono<ResponseEntity<Boolean>> logout(ServerWebExchange request){
         AuthUser authUser = request.getAttribute(AUTH_USER);
         return userService.logout(authUser == null ? "" : authUser.getToken());
-    }
-
-    @CheckSecurityToken
-    @GetMapping("/gettestuser")
-    public Mono<AuthUser> getTestAuthUser(ServerWebExchange request){
-        return Mono.just(AuthUser.builder().name("Test").surname("Test").username("testUser").build());
     }
 }

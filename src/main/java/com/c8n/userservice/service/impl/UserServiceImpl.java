@@ -96,11 +96,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Flux<User> getAll() {
-        return userRepository.findAll().log();
-    }
-
-    @Override
     public Mono<ResponseEntity<AuthUser>> loginByUsernameAndPassword(LoginRequestDto dto){
         if (ObjectUtils.isEmpty(dto) || ObjectUtils.isEmpty(dto.getUsername()) || ObjectUtils.isEmpty(dto.getPassword())){
             return Mono.just(ResponseEntity.badRequest().build());
