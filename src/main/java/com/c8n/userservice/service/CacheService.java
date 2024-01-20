@@ -9,4 +9,6 @@ public interface CacheService {
     Mono<Boolean> updateCacheUser(String key, AuthUser authUser, Duration duration);
     Mono<AuthUser> getCacheUserAndUpdate(String key, Duration duration);
     Mono<AuthUser> getCacheUser(String key);
+    Mono<Boolean> removeCacheUser(String key);
+    AuthUser getCacheUserBlock(String key);
 }

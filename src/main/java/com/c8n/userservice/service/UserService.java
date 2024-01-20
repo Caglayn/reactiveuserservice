@@ -1,5 +1,6 @@
 package com.c8n.userservice.service;
 
+import com.c8n.userservice.model.entity.AuthUser;
 import com.c8n.userservice.model.entity.User;
 import com.c8n.userservice.model.request.LoginRequestDto;
 import com.c8n.userservice.model.request.SaveUserRequestDto;
@@ -22,5 +23,7 @@ public interface UserService {
     Mono<ResponseEntity<User>> saveUser(SaveUserRequestDto saveUserRequestDto);
     Mono<ResponseEntity<Object>> deleteUser(UUID userId);
     Flux<User> getAll();
-    Mono<ResponseEntity<String>> loginByUsernameAndPassword(LoginRequestDto dto, ServerHttpRequest request);
+    Mono<ResponseEntity<AuthUser>> loginByUsernameAndPassword(LoginRequestDto dto);
+    Mono<ResponseEntity<Boolean>> logout(String token);
+    Mono<ResponseEntity<AuthUser>> getUserInfo(AuthUser user);
 }

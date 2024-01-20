@@ -6,7 +6,14 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.reactive.CorsUtils;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
 
 @Configuration
 public class WebConfig {
@@ -22,5 +29,23 @@ public class WebConfig {
     @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
     public Algorithm algorithm(){
         return Algorithm.HMAC256(AUTH_SECRET);
+    }
+
+    @Bean
+    public WebFilter corsFilter() {
+        return (ServerWebExchange ctx, WebFilterChain chain) -> {
+            if (CorsUtils.isCorsRequest(ctx.getRequest())) {
+                ctx.getResponse().getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
+                ctx.getResponse().getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+                ctx.getResponse().getHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+                ctx.getResponse().getHeaders().add("Access-Control-Max-Age", "3600");
+
+                if (ctx.getRequest().getMethod() == HttpMethod.OPTIONS) {
+                    ctx.getResponse().setStatusCode(HttpStatus.OK);
+                    return Mono.empty();
+                }
+            }
+            return chain.filter(ctx);
+        };
     }
 }

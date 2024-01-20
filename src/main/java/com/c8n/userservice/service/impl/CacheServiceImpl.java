@@ -4,6 +4,7 @@ import com.c8n.userservice.model.entity.AuthUser;
 import com.c8n.userservice.service.CacheService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.redis.core.ReactiveValueOperations;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -11,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 @Service
-@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.INTERFACES)
 public class CacheServiceImpl implements CacheService {
     private final ReactiveValueOperations<String, AuthUser> reactiveValueOps;
 
@@ -29,5 +30,14 @@ public class CacheServiceImpl implements CacheService {
 
     public Mono<AuthUser> getCacheUser(String key){
         return reactiveValueOps.get(key);
+    }
+
+    public AuthUser getCacheUserBlock(String key){
+        return reactiveValueOps.get(key).block();
+    }
+
+    @Override
+    public Mono<Boolean> removeCacheUser(String key) {
+        return reactiveValueOps.delete(key);
     }
 }

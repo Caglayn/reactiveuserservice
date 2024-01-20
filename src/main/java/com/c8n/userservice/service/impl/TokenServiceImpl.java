@@ -8,6 +8,7 @@ import com.c8n.userservice.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -18,7 +19,7 @@ import static com.c8n.userservice.constant.UserServiceConstant.*;
 
 @Slf4j
 @Service
-@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.INTERFACES)
 public class TokenServiceImpl implements TokenService {
     private final Algorithm algorithm;
 

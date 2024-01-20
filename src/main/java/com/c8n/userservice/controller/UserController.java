@@ -1,5 +1,6 @@
 package com.c8n.userservice.controller;
 
+import com.c8n.userservice.annotation.CheckSecurityToken;
 import com.c8n.userservice.model.entity.AuthUser;
 import com.c8n.userservice.model.entity.User;
 import com.c8n.userservice.model.request.LoginRequestDto;
@@ -8,8 +9,8 @@ import com.c8n.userservice.service.CacheService;
 import com.c8n.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,35 +31,49 @@ public class UserController {
     }
 
     @PostMapping(URL_SAVE)
-    public Mono<ResponseEntity<User>> saveUser(@RequestBody SaveUserRequestDto userRequestDto){
+    public Mono<ResponseEntity<User>> saveUser(@RequestBody SaveUserRequestDto userRequestDto, ServerWebExchange request){
         return userService.saveUser(userRequestDto);
     }
 
     @GetMapping("/getbyusername")
-    public Mono<ResponseEntity<User>> getUserByUsername(@RequestParam String username){
+    public Mono<ResponseEntity<User>> getUserByUsername(@RequestParam String username, ServerWebExchange request){
         // Test endpoint
         return userService.getUserByUsername(username);
     }
 
     @DeleteMapping(URL_DELETE)
-    public Mono<ResponseEntity<Object>> deleteById(@RequestParam UUID userId){
+    public Mono<ResponseEntity<Object>> deleteById(@RequestParam UUID userId, ServerWebExchange request){
         return userService.deleteUser(userId);
     }
 
     @GetMapping("/getall")
-    public Flux<User> getAll(){
+    public Flux<User> getAll(ServerWebExchange request){
         // Test endpoint
         return userService.getAll();
     }
 
     @PostMapping(URL_LOGIN)
-    public Mono<ResponseEntity<String>> logInByUsernameAndPassword(@RequestBody LoginRequestDto dto, ServerHttpRequest request){
-        return userService.loginByUsernameAndPassword(dto, request);
+    public Mono<ResponseEntity<AuthUser>> logInByUsernameAndPassword(@RequestBody LoginRequestDto dto, ServerWebExchange request){
+        return userService.loginByUsernameAndPassword(dto);
     }
 
-    @GetMapping("/getbykey")
-    public Mono<AuthUser> getFromCacheByKey(@RequestParam String key){
-        // Test endpoint
-        return cacheService.getCacheUser(key);
+    @CheckSecurityToken
+    @GetMapping(URL_INFO)
+    public Mono<ResponseEntity<AuthUser>> getUserInfo(ServerWebExchange request){
+        AuthUser authUser = request.getAttribute(AUTH_USER);
+        return userService.getUserInfo(authUser);
+    }
+
+    @CheckSecurityToken
+    @GetMapping(URL_LOGOUT)
+    public Mono<ResponseEntity<Boolean>> logout(ServerWebExchange request){
+        AuthUser authUser = request.getAttribute(AUTH_USER);
+        return userService.logout(authUser == null ? "" : authUser.getToken());
+    }
+
+    @CheckSecurityToken
+    @GetMapping("/gettestuser")
+    public Mono<AuthUser> getTestAuthUser(ServerWebExchange request){
+        return Mono.just(AuthUser.builder().name("Test").surname("Test").username("testUser").build());
     }
 }
