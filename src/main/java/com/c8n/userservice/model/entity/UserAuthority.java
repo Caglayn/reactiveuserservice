@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -18,7 +19,8 @@ import static com.c8n.userservice.constant.UserServiceConstant.*;
 @NoArgsConstructor
 @Builder
 @Table(name = TABLE_USER_AUTHORITY)
-public class UserAuthority {
+public class UserAuthority implements Serializable {
+    private static final long serialVersionUID = 7665521604528322278L;
     @Id
     @Column(COL_ID)
     @JsonIgnore

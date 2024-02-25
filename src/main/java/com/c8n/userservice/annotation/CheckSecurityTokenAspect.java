@@ -1,6 +1,5 @@
 package com.c8n.userservice.annotation;
 
-import com.c8n.userservice.model.entity.AuthUser;
 import com.c8n.userservice.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

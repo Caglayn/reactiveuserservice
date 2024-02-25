@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -13,7 +14,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthUser {
+public class AuthUser implements Serializable {
+    private static final long serialVersionUID = 7665533609728323378L;
     @Id
     private UUID id;
     private String username;
