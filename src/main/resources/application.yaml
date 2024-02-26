@@ -12,9 +12,5 @@ spring:
       password: ${redis_password}
       url: ${redis_url}
 
-logging:
-  level:
-    root: DEBUG
-
 userservice:
   secret: ${secret_key}

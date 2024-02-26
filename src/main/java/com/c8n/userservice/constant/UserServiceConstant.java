@@ -14,6 +14,7 @@ public class UserServiceConstant {
     public static final String URL_AUTH = "/authority";
     public static final String URL_INFO = "/getinfo";
     public static final String URL_LOGOUT = "/logout";
+    public static final String URL_PING = "/ping";
 
     // SQL constatns
     public static final String TABLE_USER_RECORD = "user_record";

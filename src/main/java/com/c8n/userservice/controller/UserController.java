@@ -58,6 +58,7 @@ public class UserController {
         return userService.logout(authUser == null ? "" : authUser.getToken());
     }
 
+    @GetMapping(URL_PING)
     public Mono<ResponseEntity<String>> pingPong(){
         return Mono.just(ResponseEntity.ok("pong"));
     }
