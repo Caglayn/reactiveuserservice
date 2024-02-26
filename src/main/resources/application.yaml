@@ -14,7 +14,7 @@ spring:
 
 logging:
   level:
-    org.springframework.r2dbc: DEBUG
+    root: DEBUG
 
 userservice:
   secret: ${secret_key}

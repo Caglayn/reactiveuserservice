@@ -57,4 +57,8 @@ public class UserController {
         AuthUser authUser = request.getAttribute(AUTH_USER);
         return userService.logout(authUser == null ? "" : authUser.getToken());
     }
+
+    public Mono<ResponseEntity<String>> pingPong(){
+        return Mono.just(ResponseEntity.ok("pong"));
+    }
 }
