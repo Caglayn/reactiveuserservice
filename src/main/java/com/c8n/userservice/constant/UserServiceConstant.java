@@ -1,5 +1,7 @@
 package com.c8n.userservice.constant;
 
+import java.util.List;
+
 public class UserServiceConstant {
     public static final String AUTH_ISSUER = "com.c8n";
 
@@ -41,4 +43,8 @@ public class UserServiceConstant {
     public static final String AUTH_HEADER = "Authorization";
     public static final String AUTH_USER = "authUser";
 
+    public static final List<String> ALLOWED_ORIGINS = List.of(
+            "http://localhost:3000",
+            "http://89.117.48.141"
+    );
 }

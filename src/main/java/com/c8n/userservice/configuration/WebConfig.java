@@ -15,6 +15,10 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
+import static com.c8n.userservice.constant.UserServiceConstant.ALLOWED_ORIGINS;
+
 @Configuration
 public class WebConfig {
     @Value("${secret_key}")
@@ -35,10 +39,13 @@ public class WebConfig {
     public WebFilter corsFilter() {
         return (ServerWebExchange ctx, WebFilterChain chain) -> {
             if (CorsUtils.isCorsRequest(ctx.getRequest())) {
-                ctx.getResponse().getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000, http://89.117.48.141");
-                ctx.getResponse().getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-                ctx.getResponse().getHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
-                ctx.getResponse().getHeaders().add("Access-Control-Max-Age", "3600");
+                List<String> originHeaders = ctx.getRequest().getHeaders().get("Origin");
+                if (originHeaders != null && !originHeaders.isEmpty() && ALLOWED_ORIGINS.contains(originHeaders.getFirst())){
+                    ctx.getResponse().getHeaders().add("Access-Control-Allow-Origin", originHeaders.getFirst());
+                    ctx.getResponse().getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+                    ctx.getResponse().getHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+                    ctx.getResponse().getHeaders().add("Access-Control-Max-Age", "3600");
+                }
 
                 if (ctx.getRequest().getMethod() == HttpMethod.OPTIONS) {
                     ctx.getResponse().setStatusCode(HttpStatus.OK);
