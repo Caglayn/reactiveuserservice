@@ -35,7 +35,7 @@ public class WebConfig {
     public WebFilter corsFilter() {
         return (ServerWebExchange ctx, WebFilterChain chain) -> {
             if (CorsUtils.isCorsRequest(ctx.getRequest())) {
-                ctx.getResponse().getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
+                ctx.getResponse().getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000, http://89.117.48.141");
                 ctx.getResponse().getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
                 ctx.getResponse().getHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
                 ctx.getResponse().getHeaders().add("Access-Control-Max-Age", "3600");
